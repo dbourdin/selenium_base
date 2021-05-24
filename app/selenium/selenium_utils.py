@@ -4,6 +4,19 @@ from selenium.webdriver.support.events import AbstractEventListener
 from app import settings
 
 
+# Decorator function to switch context within IFrame, and switch back to default context
+def within_iframe(iframe_selector):
+    def decorator(f):
+
+        def wrapper(self, *args, **kwargs):
+            self._driver.switch_to.frame(self._get_element(iframe_selector))
+            r = f(self, *args, **kwargs)
+            self._driver.switch_to.default_content()
+            return r
+        return wrapper
+    return decorator
+
+
 class WaitForPageToLoad:
     WAIT_FOR_PAGE_SCRIPT = ("return (typeof document != 'undefined')"
                             " && (document.readyState == 'complete')"
