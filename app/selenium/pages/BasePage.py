@@ -1,5 +1,6 @@
 import requests
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 
 from app.selenium.web_driver import driver
 
@@ -33,3 +34,6 @@ class BasePage:
 
     def _get_current_url(self):
         return self._driver.current_url
+
+    def _select_option_in_dropdown_by_text(self, dropdown_selector, option_text):
+        Select(self._get_element(dropdown_selector)).select_by_visible_text(option_text)
